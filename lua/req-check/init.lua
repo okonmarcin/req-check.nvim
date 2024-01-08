@@ -1,0 +1,11 @@
+local M = {}
+
+local core = require("req-check.core")
+
+function M.setup()
+	vim.api.nvim_create_user_command("ReqCheck", function()
+		core.check_requirement()
+	end, { nargs = 0 })
+end
+
+return M
