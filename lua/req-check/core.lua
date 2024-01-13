@@ -7,7 +7,7 @@ function M.check_requirement()
 	local buf_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
 	if string.sub(buf_name, -3, -1) ~= ".in" then
-		print("Not a *.in file")
+		vim.api.nvim_err_writeln("Current file: " .. buf_name .. " is not a Python requirements file.")
 		return
 	end
 
