@@ -22,7 +22,7 @@ Nowadays libraries are dependent on other libraries and following what changes i
 * neovim 0.8.0+ required
 * install using your favorite plugin manager (i am using `packer` in this case)
 ```lua
-use "okonmarcin/req-check.nvim" -- don't forget to add this one if you don't have it yet!
+use "okonmarcin/req-check.nvim"
 ```
 * install using [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
@@ -33,8 +33,10 @@ use "okonmarcin/req-check.nvim" -- don't forget to add this one if you don't hav
 
 ## ⇁ Usage
 
-Usage of the plugin is pretty straightforward, just use `:ReqCheck` command while your current buffer shows the `*.in` file that lists your high-level dependencies, after a couple of seconds you'll see a virtual text near the libraries that can potentially be updated.
+Usage of the plugin is pretty straightforward, just type `:ReqCheck` command while your current buffer shows the `*.in` file that lists your high-level dependencies, after a couple of seconds you'll see a virtual text near the libraries that can potentially be updated.
 The result presented on the screenshot below:
 
-![alt text](https://github.com/okonmarcin/req-chech.nvim/blob/main/example_result.png?raw=true)
+<div align="center">
+<img alt="Result" height="280" src="/assets/example_result.png" />
+</div>
 
