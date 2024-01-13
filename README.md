@@ -36,5 +36,7 @@ use "okonmarcin/req-check.nvim" -- don't forget to add this one if you don't hav
 Usage of the plugin is pretty straightforward, just use `:ReqCheck` command while your current buffer shows the `*.in` file that lists your high-level dependencies, after a couple of seconds you'll see a virtual text near the libraries that can potentially be updated.
 The result presented on the screenshot below:
 
-![alt text](https://github.com/okonmarcin/req-chech.nvim/blob/main/example_result.png?raw=true)
+<div align="center">
+<img alt="Result" height="280" src="/assets/example_result.png" />
+</div>
 
