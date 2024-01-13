@@ -22,7 +22,7 @@ Nowadays libraries are dependent on other libraries and following what changes i
 * neovim 0.8.0+ required
 * install using your favorite plugin manager (i am using `packer` in this case)
 ```lua
-use "okonmarcin/req-check.nvim" -- don't forget to add this one if you don't have it yet!
+use "okonmarcin/req-check.nvim"
 ```
 * install using [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
