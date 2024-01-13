@@ -1,52 +1,49 @@
 local M = {}
 
-local function splitString(str)
-	local results = {}
-	for word in string.gmatch(str, "%S+") do
-		table.insert(results, word)
-	end
-	return { results[1], results[2], results[3] }
-end
-
 
 function M.check_requirement()
-	local find_file_output = io.popen([[find . -type f -name '*.in']])
-	local req_in_file_path
-	if find_file_output then
-		req_in_file_path = find_file_output:read("*l")
-		find_file_output:close()
-		local req_in_file_content = io.open(req_in_file_path, "r")
-		local installed_dependencies = {}
-		if req_in_file_content then
-			for line in req_in_file_content:lines() do
-				table.insert(installed_dependencies, line)
-			end
-			local outdated_deps_output = io.popen([[pip list --outdated]], "r")
-			local final_dependencies_to_be_updated = {}
-			if outdated_deps_output then
-				for line in outdated_deps_output:lines() do
-					for _, prefix in ipairs(installed_dependencies) do
-						if string.sub(line, 1, string.len(prefix)) == prefix then
-							table.insert(final_dependencies_to_be_updated,
-								splitString(line))
-						end
-					end
-				end
-				outdated_deps_output:close()
-			else
-				require("notify")("Everything is up to date!", "info", { title = "Requirements Check" })
-			end
-			local message = ""
-			for _, row in ipairs(final_dependencies_to_be_updated) do
-				message = message .. row[1] .. ": " .. row[2] .. " ---> " .. row[3] .. "\n"
-			end
-			require("notify")(message, 'warn', { title = 'Requirements Check' })
-		else
-			require("notify")("No requirements found in requirement.in file", "warn",
-				{ title = "Requirements Check" })
+	local buf = vim.api.nvim_get_current_buf()
+	local buf_name = vim.api.nvim_buf_get_name(buf)
+	local buf_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+	if string.sub(buf_name, -3, -1) ~= ".in" then
+		print("Not a *.in file")
+		return
+	end
+
+
+	local lib_mapping = {}
+	for line_number, lib_name in pairs(buf_lines) do
+		if lib_name ~= "" then
+			lib_mapping[lib_name] = { line_number }
 		end
-	else
-		require("notify")("No requirements files found", "warn", { title = "Requrements Check" })
+	end
+
+	local outdated_libs = io.popen([[pip list --outdated --disable-pip-version-check]])
+	if outdated_libs then
+		outdated_libs:read("*line")
+		outdated_libs:read("*line")
+	end
+	for lib_row in outdated_libs:lines() do
+		local splited_values = {}
+		for w in string.gmatch(lib_row, "%S+") do
+			table.insert(splited_values, w)
+		end
+		if lib_mapping[splited_values[1]] ~= nil then
+			table.insert(lib_mapping[splited_values[1]], splited_values[2])
+			table.insert(lib_mapping[splited_values[1]], splited_values[3])
+		end
+	end
+
+	local namespace = vim.api.nvim_create_namespace("req_check")
+	for _, lib_info in pairs(lib_mapping) do
+		if #lib_info == 3 then
+			vim.api.nvim_buf_set_extmark(buf, namespace, lib_info[1] - 1, 0, {
+				virt_text = { { "# " .. lib_info[2] .. " ===> " .. lib_info[3], "WarningMsg" } },
+				virt_text_pos = "eol",
+				hl_group = "WarningMsg"
+			})
+		end
 	end
 end
 
