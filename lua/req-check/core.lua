@@ -56,11 +56,11 @@ function M.update_requirements()
 	local buf = vim.api.nvim_get_current_buf()
 	local buf_name = vim.api.nvim_buf_get_name(buf)
 
-	local compilation_out = io.popen("pip-compile -r " ..
-		buf_name .. " --resolver backtracking -vv")
-	if compilation_out then
-		local result = compilation_out:read()
-		vim.api.nvim_out_write(result .. "\n")
+	local handle = io.popen("pip-compile -r " ..
+		buf_name .. " --resolver backtracking -vv > /dev/null")
+	if handle then
+		vim.api.nvim_out_write("Requirements recompiled.")
+		handle:close()
 	end
 end
 
@@ -70,10 +70,12 @@ function M.reinstall_requirements()
 
 	local requirement_txt_filename = string.sub(buf_name, 0, 3) .. "txt"
 
-	local installation_output = io.popen("pip install -r " .. requirement_txt_filename)
-	if installation_output then
-		vim.api.nvim_out_write("Installation finished")
+	local handle = io.popen("pip install -r " ..
+		requirement_txt_filename .. " --disable-pip-version-check > /dev/null")
+	if handle then
+		vim.api.nvim_out_write("Installation finished.")
 		vim.api.nvim_buf_clear_namespace(buf, NAMESPACE, 0, -1)
+		handle:close()
 	end
 end
 
