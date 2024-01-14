@@ -33,10 +33,17 @@ use "okonmarcin/req-check.nvim"
 
 ## ⇁ Usage
 
+* Check
 Usage of the plugin is pretty straightforward, just type `:ReqCheck` command while your current buffer shows the `*.in` file that lists your high-level dependencies, after a couple of seconds you'll see a virtual text near the libraries that can potentially be updated.
 The result presented on the screenshot below:
 
 <div align="center">
 <img alt="Result" height="280" src="/assets/example_result.png" />
 </div>
+
+* Update
+To recompile `requirements.in` file use command `:ReqUpdate`, it will generate updated `requirements.txt` file in the same directory as `requirements.in` is in.
+
+* Install
+To reinstall requirements file use command `:ReqInstall`, it will invoke `pip install... ` command undernith and all dependencies will be reinstalled accorgind to `requirements.txt` file content.
 
