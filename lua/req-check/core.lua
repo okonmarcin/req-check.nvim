@@ -1,4 +1,6 @@
-local M = {}
+local M   = {}
+
+NAMESPACE = vim.api.nvim_create_namespace("req-check")
 
 
 function M.check_requirement()
@@ -34,12 +36,11 @@ function M.check_requirement()
 			end
 		end
 	end
-	local namespace = vim.api.nvim_create_namespace("req_check")
 	local all_up_to_date = true
 	for _, lib_info in pairs(lib_mapping) do
 		if #lib_info == 3 then
 			all_up_to_date = false
-			vim.api.nvim_buf_set_extmark(buf, namespace, lib_info[1] - 1, 0, {
+			vim.api.nvim_buf_set_extmark(buf, NAMESPACE, lib_info[1] - 1, 0, {
 				virt_text = { { "# " .. lib_info[2] .. " ===> " .. lib_info[3], "WarningMsg" } },
 				virt_text_pos = "eol",
 				hl_group = "WarningMsg"
@@ -48,6 +49,31 @@ function M.check_requirement()
 	end
 	if all_up_to_date == true then
 		vim.api.nvim_out_write("All dependecies are up to date.\n")
+	end
+end
+
+function M.update_requirements()
+	local buf = vim.api.nvim_get_current_buf()
+	local buf_name = vim.api.nvim_buf_get_name(buf)
+	local command = "pip-compile -r " .. buf_name .. " --resolver=backtracking -vv"
+	local handle = io.popen(command)
+	if handle then
+		vim.api.nvim_out_write(handle:read("a"))
+		handle:close()
+	end
+end
+
+function M.reinstall_requirements()
+	local buf = vim.api.nvim_get_current_buf()
+	local buf_name = vim.api.nvim_buf_get_name(buf)
+
+	local requirement_txt_filename = string.sub(buf_name, 0, -3) .. "txt"
+	local command = "pip install -r " .. requirement_txt_filename .. " --disable-pip-version-check --force-reinstall"
+	local handle = io.popen(command)
+	if handle then
+		vim.api.nvim_out_write(handle:read("a"))
+		vim.api.nvim_buf_clear_namespace(buf, NAMESPACE, 0, -1)
+		handle:close()
 	end
 end
 
