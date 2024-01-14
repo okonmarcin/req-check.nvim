@@ -11,7 +11,7 @@ function M.setup()
 		core.update_requirements()
 	end, { nargs = 0 })
 
-	vim.api.nvim.nvim_create_user_command("ReqInstall", function()
+	vim.api.nvim_create_user_command("ReqInstall", function()
 		core.reinstall_requirements()
 	end, { nargs = 0 })
 end
