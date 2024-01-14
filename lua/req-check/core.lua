@@ -69,7 +69,7 @@ function M.reinstall_requirements()
 	local buf_name = vim.api.nvim_buf_get_name(buf)
 
 	local requirement_txt_filename = string.sub(buf_name, 0, 3) .. "txt"
-
+	print(requirement_txt_filename)
 	local handle = io.popen("pip install -r " ..
 		requirement_txt_filename .. " --disable-pip-version-check > /dev/null")
 	if handle then
