@@ -67,7 +67,7 @@ function M.reinstall_requirements()
 	local buf = vim.api.nvim_get_current_buf()
 	local buf_name = vim.api.nvim_buf_get_name(buf)
 
-	local requirement_txt_filename = string.sub(buf_name, 0, 3) .. ".txt"
+	local requirement_txt_filename = string.sub(buf_name, 0, 3) .. "txt"
 
 	local installation_output = io.popen("pip install -r " .. requirement_txt_filename)
 	if installation_output then
