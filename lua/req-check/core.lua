@@ -57,7 +57,7 @@ function M.update_requirements()
 	local buf_name = vim.api.nvim_buf_get_name(buf)
 
 	local compilation_out = io.popen("pip-compile -r " ..
-		buf_name .. " --resolver backtracking -vv --disable-pip-version-check")
+		buf_name .. " --resolver backtracking -vv")
 	if compilation_out then
 		vim.api.nvim_out_write("Requirements compiled")
 	end
