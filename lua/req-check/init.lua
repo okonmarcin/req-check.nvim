@@ -9,6 +9,7 @@ function M.setup()
 
 	vim.api.nvim_create_user_command("ReqUpdate", function()
 		core.update_requirements()
+		core.reinstall_requirements()
 	end, { nargs = 0 })
 end
 

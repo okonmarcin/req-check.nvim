@@ -1,4 +1,6 @@
-local M = {}
+local M   = {}
+
+NAMESPACE = vim.api.nvim_create_namespace("req-check")
 
 
 function M.check_requirement()
@@ -34,12 +36,11 @@ function M.check_requirement()
 			end
 		end
 	end
-	local namespace = vim.api.nvim_create_namespace("req_check")
 	local all_up_to_date = true
 	for _, lib_info in pairs(lib_mapping) do
 		if #lib_info == 3 then
 			all_up_to_date = false
-			vim.api.nvim_buf_set_extmark(buf, namespace, lib_info[1] - 1, 0, {
+			vim.api.nvim_buf_set_extmark(buf, NAMESPACE, lib_info[1] - 1, 0, {
 				virt_text = { { "# " .. lib_info[2] .. " ===> " .. lib_info[3], "WarningMsg" } },
 				virt_text_pos = "eol",
 				hl_group = "WarningMsg"
@@ -58,6 +59,19 @@ function M.update_requirements()
 	local compilation_out = io.popen("pip-compile -r " .. buf_name .. "--resolver backtrackint -vv")
 	if compilation_out then
 		vim.api.nvim_out_write("Requirements compiled")
+	end
+end
+
+function M.reinstall_requirements()
+	local buf = vim.api.nvim_get_current_buf()
+	local buf_name = vim.api.nvim_buf_get_name(buf)
+
+	local requirement_txt_filename = string.sub(buf_name, 0, 3) .. ".txt"
+
+	local installation_output = io.popen("pip install -r " .. requirement_txt_filename)
+	if installation_output then
+		vim.api.nvim_out_write("Installation finished")
+		vim.api.nvim_buf_clear_namespace(buf, NAMESPACE, 0, -1)
 	end
 end
 
