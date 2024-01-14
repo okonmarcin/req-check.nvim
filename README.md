@@ -35,17 +35,16 @@ use "okonmarcin/req-check.nvim"
 ### Prerequisites ###
 All operations listed below need to be performed while your `requirements.in` file is opened.
 
-### Check ###
-Type `:ReqCheck`, after a couple of seconds you'll see a virtual text near the libraries that can potentially be updated.
-The result presented on the screenshot below:
+### `:ReqCheck` ###
+Command will check wchich dependecies can potentially be updated. Result will show on the screen after few seconds as a virtual text near dependency that has a newer version in the PyPi.
 
 <div align="center">
 <img alt="Result" height="280" src="/assets/example_result.png" />
 </div>
 
-### Update ###
-To recompile `*.in` file use command `:ReqUpdate`, it will generate updated `*.txt` file in the same directory as `*.in` is in.
+### `:ReqUpdate` ###
+Command will recompile `*.in` file into `*.txt` file with newer versions if that's possible. (It may not happen if a library is dependent on a particular version of other library from the `*.in` file.)
 
-### Install ###
-To reinstall requirements file use command `:ReqInstall`, it will invoke `pip install... ` command undernith and all dependencies will be reinstalled according to `*.txt` file content.
+### `:ReqInstall` ###
+Command will reinstall all dependencies listed in `*.txt` file. After invoking this one can run again `:ReqCheck` to see if the state of the installed libraries has changed.
 
