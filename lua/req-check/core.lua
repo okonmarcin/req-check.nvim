@@ -51,4 +51,14 @@ function M.check_requirement()
 	end
 end
 
+function M.update_requirements()
+	local buf = vim.api.nvim_get_current_buf()
+	local buf_name = vim.api.nvim_buf_get_name(buf)
+
+	local compilation_out = io.popen("pip-compile -r " .. buf_name .. "--resolver backtrackint -vv")
+	if compilation_out then
+		vim.api.nvim_out_write("Requirements compiled")
+	end
+end
+
 return M
