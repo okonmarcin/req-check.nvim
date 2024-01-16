@@ -32,11 +32,19 @@ use "okonmarcin/req-check.nvim"
 ```
 
 ## ⇁ Usage
+### Prerequisites ###
+All operations listed below need to be performed while your `requirements.in` file is opened.
 
-Usage of the plugin is pretty straightforward, just type `:ReqCheck` command while your current buffer shows the `*.in` file that lists your high-level dependencies, after a couple of seconds you'll see a virtual text near the libraries that can potentially be updated.
-The result presented on the screenshot below:
+### `:ReqCheck` ###
+Command will check wchich dependecies can potentially be updated. Result will show on the screen after few seconds as a virtual text near the dependency that has a newer version in the PyPi.
 
 <div align="center">
 <img alt="Result" height="280" src="/assets/example_result.png" />
 </div>
+
+### `:ReqUpdate` ###
+Command will recompile the `*.in` file into the `*.txt` file with newer versions if that's possible. (It may not happen if a library is dependent on a particular version of other library from the `*.in` file.)
+
+### `:ReqInstall` ###
+Command will reinstall all dependencies listed in the `*.txt` file. After invoking this one can run again `:ReqCheck` command to see if the state of the installed libraries has changed.
 
